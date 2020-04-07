@@ -7,8 +7,32 @@ namespace Tennis
         private string player1Name;
         private string player2Name;
 
+        /// <summary> The representation of a tennis player. </summary>
+        struct Player
+        {
+            string name;
+            int score;
+
+            /// <summary> Creates a new <see cref="Player"/>. </summary>
+            /// <param name="name"> The name of the player. </param>
+            /// <remarks> The score is initially set to zero. </remarks>
+            public Player(string name)
+            {
+                this.name = name;
+                this.score = 0;
+            }
+
+            /// <summary>Returns the name of the player.</summary>
+            public override string ToString() => $"{name}";
+        }
+
+        Player player1;
+        Player player2;
+
         public TennisGame1(string player1Name, string player2Name)
         {
+            this.player1 = new Player(player1Name);
+            this.player2 = new Player(player2Name);
             this.player1Name = player1Name;
             this.player2Name = player2Name;
         }
