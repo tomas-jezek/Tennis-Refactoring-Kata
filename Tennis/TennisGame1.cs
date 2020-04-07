@@ -10,8 +10,10 @@ namespace Tennis
         /// <summary> The representation of a tennis player. </summary>
         struct Player
         {
-            string name;
-            int score;
+            /// <summary> The name of the player. </summary>
+            public string name;
+            /// <summary> Current score of the player in the game. </summary>
+            public int score;
 
             /// <summary> Creates a new <see cref="Player"/>. </summary>
             /// <param name="name"> The name of the player. </param>
@@ -48,7 +50,7 @@ namespace Tennis
         public string GetScore()
         {
             string score = "";
-            if (score1 == score2)
+            var tempScore = 0;
             {
                 switch (score1)
                 {
@@ -79,7 +81,7 @@ namespace Tennis
             {
                 for (var i = 1; i < 3; i++)
                 {
-                    if (i == 1) tempScore = score1;
+                    int tempScore;
                     else { score += "-"; tempScore = score2; }
                     switch (tempScore)
                     {
