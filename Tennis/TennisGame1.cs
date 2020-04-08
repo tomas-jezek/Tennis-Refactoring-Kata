@@ -2,11 +2,6 @@ namespace Tennis
 {
     class TennisGame1 : ITennisGame
     {
-        private int score1 = 0;
-        private int score2 = 0;
-        private string player1Name;
-        private string player2Name;
-
         /// <summary> The representation of a tennis player. </summary>
         struct Player
         {
@@ -35,24 +30,20 @@ namespace Tennis
         {
             this.player1 = new Player(player1Name);
             this.player2 = new Player(player2Name);
-            this.player1Name = player1Name;
-            this.player2Name = player2Name;
         }
 
         public void WonPoint(string playerName)
         {
-            if (playerName == "player1")
-                score1 += 1;
-            else
-                score2 += 1;
+            if (playerName == "player1") player1.score += 1;
+            else player2.score += 1;
         }
 
         public string GetScore()
         {
             string score = "";
-            var tempScore = 0;
+            if (player1.score == player2.score)
             {
-                switch (score1)
+                switch (player1.score)
                 {
                     case 0:
                         score = "Love-All";
@@ -66,12 +57,11 @@ namespace Tennis
                     default:
                         score = "Deuce";
                         break;
-
                 }
             }
-            else if (score1 >= 4 || score2 >= 4)
+            else if (player1.score >= 4 || player2.score >= 4)
             {
-                var minusResult = score1 - score2;
+                var minusResult = player1.score - player2.score;
                 if (minusResult == 1) score = "Advantage player1";
                 else if (minusResult == -1) score = "Advantage player2";
                 else if (minusResult >= 2) score = "Win for player1";
@@ -82,7 +72,12 @@ namespace Tennis
                 for (var i = 1; i < 3; i++)
                 {
                     int tempScore;
-                    else { score += "-"; tempScore = score2; }
+                    if (i == 1) tempScore = player1.score;
+                    else
+                    {
+                        score += "-";
+                        tempScore = player2.score;
+                    }
                     switch (tempScore)
                     {
                         case 0:
@@ -104,4 +99,3 @@ namespace Tennis
         }
     }
 }
-
