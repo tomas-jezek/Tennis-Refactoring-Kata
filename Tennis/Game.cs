@@ -1,6 +1,7 @@
 namespace Tennis
 {
-    class TennisGame1 : ITennisGame
+    /// <summary> A single game of tennis. </summary>
+    class Game : ITennisGame
     {
         /// <summary> The representation of a tennis player. </summary>
         struct Player
@@ -26,7 +27,7 @@ namespace Tennis
         Player player1;
         Player player2;
 
-        public TennisGame1(string player1Name, string player2Name)
+        public Game(string player1Name, string player2Name)
         {
             this.player1 = new Player(player1Name);
             this.player2 = new Player(player2Name);
