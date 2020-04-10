@@ -54,7 +54,7 @@ namespace Tennis.SecondApproach
 
         public string GetScore()
         {
-            string score = string.Empty;
+            string score = string.Empty; //? String builder is inefficient for such a small number of strings put together
 
             //! Equal scores
             if (player1.score == player2.score)
@@ -64,16 +64,12 @@ namespace Tennis.SecondApproach
             }
 
             //! Regular scores
-            if (AnyPlayer((player, opponent) => player.score > 0 && opponent.score == 0)) 
-                score = PlayerLove();
-            else if (AnyPlayer((player, opponent) => player.score > opponent.score && player.score < 4)) 
-                score = PlayerLowMore();
-            else if (AnyPlayer((player, opponent) => player.score > opponent.score && opponent.score >= 3)) 
-                score = PlayerHighMore();
+            if (AnyPlayer((player, opponent) => player.score > 0 && opponent.score == 0)) score = PlayerLove();
+            else if (AnyPlayer((player, opponent) => player.score > opponent.score && player.score < 4)) score = PlayerLowMore();
+            else if (AnyPlayer((player, opponent) => player.score > opponent.score && opponent.score >= 3)) score = PlayerHighMore();
 
             //! Victory conditions
-            if (AnyPlayer((player, opponent) => player.score >= 4 && opponent.score >= 0 && (player.score - opponent.score) >= 2)) 
-                score = PlayerWin();
+            if (AnyPlayer((player, opponent) => player.score >= 4 && (player.score - opponent.score) >= 2)) score = PlayerWin();
 
             return score;
 
