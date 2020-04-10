@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using TennisGame1 = Tennis.FirstApproach.TennisGame;
 using TennisGame2 = Tennis.SecondApproach.TennisGame;
+using TennisGame3 = Tennis.ThirdApproach.TennisGame;
 
 namespace Tennis
 {
