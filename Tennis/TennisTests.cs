@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Tennis.ThirdApproach;
 
 namespace Tennis
 {
@@ -66,7 +67,7 @@ namespace Tennis
         [Test]
         public void CheckTennisGame3()
         {
-            var game = new TennisGame3("player1", "player2");
+            var game = new TennisGame("player1", "player2");
             CheckAllScores(game);
         }
 
@@ -105,7 +106,7 @@ namespace Tennis
         [Test]
         public void CheckGame3()
         {
-            var game = new TennisGame3("player1", "player2");
+            var game = new TennisGame("player1", "player2");
             RealisticTennisGame(game);
         }
 
