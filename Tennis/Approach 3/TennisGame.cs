@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+
 namespace Tennis.ThirdApproach
 {
     public class TennisGame : ITennisGame
@@ -25,26 +26,25 @@ namespace Tennis.ThirdApproach
         {
             //! Low
             bool lowAmountOfPoints = (player1, player2).Both(p => p.score < 4)
-                                 && (player1, player2).Either(p => p.score != 3);
+                                  && (player1, player2).Either(p => p.score != 3);
             if (lowAmountOfPoints)
             {
                 return MapPointsToResult(player1.score, player2.score);
             }
-            else
-            {
-                //! Equal large
-                bool equalPoints = player1.score == player2.score;
-                if (equalPoints) return ScoreLabel.Deuce.ToString();
 
-                //! Unequal large
-                string result = player1.score > player2.score 
-                        ? player1.name : player2.name;
+            //! Equal large
+            bool equalPoints = player1.score == player2.score;
+            if (equalPoints) return ScoreLabel.Deuce.ToString();
 
-                bool differenceIsSmall = Math.Abs(player1.score - player2.score) == 1;
-                return (differenceIsSmall) 
-                        ? $"{ScoreLabel.Advantage} " + result 
-                        : $"{ScoreLabel.Win} for " + result;
-            }
+            //! Unequal large
+            string result = player1.score > player2.score
+                    ? player1.name
+                    : player2.name;
+
+            bool differenceIsSmall = Math.Abs(player1.score - player2.score) == 1;
+            return (differenceIsSmall)
+                    ? $"{ScoreLabel.Advantage} " + result
+                    : $"{ScoreLabel.Win} for " + result;
 
             string MapPointsToResult(int score1, int score2)
             {
