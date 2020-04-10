@@ -144,16 +144,6 @@ namespace Tennis.SecondApproach
             return score;
         }
 
-        public void SetP1Score(int score)
-        {
-            player1.AddPoints(score);
-        }
-
-        public void SetP2Score(int score)
-        {
-            player2.AddPoints(score);
-        }
-
         public void WonPoint(string playerName)
         {
             if (playerName == player1.name) player1.AddPoints(1);
