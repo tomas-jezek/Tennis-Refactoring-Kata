@@ -92,11 +92,23 @@ namespace Tennis.FirstApproach {
             //! Creates the score result when the scores are large
             string NameLargeScores()
             {
-                var minusResult = player1.score - player2.score;
-                if (minusResult == 1) score = $"Advantage {player1.name}";
-                else if (minusResult == -1) score = $"Advantage {player2.name}";
-                else if (minusResult >= 2) score = $"Win for {player1.name}";
-                else score = $"Win for {player2.name}";
+                int minusResult = player1.score - player2.score;
+                switch (minusResult) {
+                    case 1: //! difference 1, player1 is winning
+                        score = $"Advantage {player1.name}";
+                        break;
+                    case -1: //! difference 1, player2 is winning
+                        score = $"Advantage {player2.name}";
+                        break;
+                    default:
+                    {
+                        //! larger difference
+                        score = minusResult >= 2 
+                                ? $"Win for {player1.name}" // player1 wins
+                                : $"Win for {player2.name}"; // player2 wins
+                        break;
+                    }
+                }
                 return score;
             }
         }
