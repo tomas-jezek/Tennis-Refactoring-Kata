@@ -7,7 +7,8 @@
         public string name;
         /// <summary> Current score of the player in the game. </summary>
         public int score;
-
+        /// <summary> The string representation of the player's score. </summary>
+        public string result;
         /// <summary> Creates a new <see cref="Player"/>. </summary>
         /// <param name="name"> The name of the player. </param>
         /// <remarks> The score is initially set to zero. </remarks>
@@ -15,6 +16,7 @@
         {
             this.name = name;
             this.score = 0;
+            this.result = string.Empty;
         }
 
         /// <summary> Adds a point to the player's <see cref="score"/>. </summary>

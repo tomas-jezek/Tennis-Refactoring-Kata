@@ -12,9 +12,6 @@ namespace Tennis.SecondApproach
         Player player1;
         Player player2;
 
-        string player1Result = string.Empty;
-        string player2Result = string.Empty;
-
         /// <summary> Returns the player with the higher amount of points. </summary>
         internal Player WinningPlayer => player1.score >= player2.score ? player1 : player2;
 
@@ -23,13 +20,14 @@ namespace Tennis.SecondApproach
 
         internal void SetWinningResult(string result)
         {
-            if (WinningPlayer.Equals(player1)) player1Result = result;
-            else player2Result = result;
+            if (WinningPlayer.Equals(player1)) player1.result = result;
+            else player2.result = result;
         }
+
         internal void SetLosingResult(string result)
         {
-            if (WinningPlayer.Equals(player1)) player2Result = result;
-            else player1Result = result;
+            if (WinningPlayer.Equals(player1)) player2.result = result;
+            else player1.result = result;
         }
 
         /// <summary> Returns <see langword="true"/> if a condition is satisfied by either <see cref="Player"/>. </summary>
@@ -57,20 +55,26 @@ namespace Tennis.SecondApproach
         public string GetScore()
         {
             string score = string.Empty;
+
+            //! Equal scores
             if (player1.score == player2.score)
             {
                 if (player1.score < 3) score = NameLowScore();
                 else if (player1.score > 2) score = NameLowEqual();
             }
 
+            //! Regular scores
             if (AnyPlayer((player, opponent) => player.score > 0 && opponent.score == 0)) 
-                PlayerLove();
-            if (AnyPlayer((player, opponent) => player.score > opponent.score && player.score < 4)) 
+                score = PlayerLove();
+            else if (AnyPlayer((player, opponent) => player.score > opponent.score && player.score < 4)) 
                 score = PlayerLowMore();
-            if (AnyPlayer((player, opponent) => player.score > opponent.score && opponent.score >= 3)) 
+            else if (AnyPlayer((player, opponent) => player.score > opponent.score && opponent.score >= 3)) 
                 score = PlayerHighMore();
+
+            //! Victory conditions
             if (AnyPlayer((player, opponent) => player.score >= 4 && opponent.score >= 0 && (player.score - opponent.score) >= 2)) 
                 score = PlayerWin();
+
             return score;
 
             string NameLowScore()
@@ -109,7 +113,7 @@ namespace Tennis.SecondApproach
 
                 SetLosingResult($"{ScoreLabel.Love}");
 
-                score = player1Result + Delimiter + player2Result;
+                score = player1.result + Delimiter + player2.result;
                 return score;
             }
 
@@ -121,7 +125,7 @@ namespace Tennis.SecondApproach
                 switch (winningPlayer.score)
                 {
                     case 2:
-                        SetWinningResult( $"{ScoreLabel.Thirty}");
+                        SetWinningResult($"{ScoreLabel.Thirty}");
                         break;
                     case 3:
                         SetWinningResult($"{ScoreLabel.Forty}");
@@ -137,7 +141,7 @@ namespace Tennis.SecondApproach
                         SetLosingResult($"{ScoreLabel.Thirty}");
                         break;
                 }
-                score = player1Result + $"{Delimiter}" + player2Result;
+                score = player1.result + $"{Delimiter}" + player2.result;
                 return score;
             }
 
