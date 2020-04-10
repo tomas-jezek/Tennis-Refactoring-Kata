@@ -1,6 +1,8 @@
 using System;
+using System.Linq;
 
-namespace Tennis.FirstApproach {
+namespace Tennis.FirstApproach
+{
     /// <summary> Additional helper methods for simplifying tennis score displaying. </summary>
     static class TennisExtensions
     {
@@ -13,6 +15,15 @@ namespace Tennis.FirstApproach {
         {
             (T first, T second) = pair;
             return condition.Invoke(first) && condition.Invoke(second);
+        }
+    }
+    /// <summary> Additional helper methods for simplifying tennis score displaying. </summary>
+    static class TennisUtils
+    {
+        /// <summary> Returns the winning player with the highest score. </summary>
+        public static Player GetWinningPlayer(params Player[] players)
+        {
+            return players.OrderByDescending(p => p.score).FirstOrDefault();
         }
     }
 }

@@ -1,9 +1,14 @@
+using System;
+
 namespace Tennis.FirstApproach {
     /// <summary> A single game of tennis. </summary>
     class TennisGame : ITennisGame
     {
         Player player1;
         Player player2;
+
+        /// <summary> Gets the player with the higher score. </summary>
+        public Player WinningPlayer => TennisUtils.GetWinningPlayer(player1, player2);
 
         /// <summary> Creates an instance of a new game. </summary>
         /// <param name="player1Name"> The name of the first <see cref="Player"/>. </param>
@@ -92,22 +97,18 @@ namespace Tennis.FirstApproach {
             //! Creates the score result when the scores are large
             string NameLargeScores()
             {
-                int minusResult = player1.score - player2.score;
-                switch (minusResult) {
-                    case 1: //! difference 1, player1 is winning
-                        score = $"Advantage {player1.name}";
+                int scoreDifference = Math.Abs(player1.score - player2.score);
+                switch (scoreDifference)
+                {
+                    case 0:
+                        // TODO: Move 'Deuce' here
                         break;
-                    case -1: //! difference 1, player2 is winning
-                        score = $"Advantage {player2.name}";
+                    case 1:
+                        score = $"Advantage {WinningPlayer.name}";
                         break;
                     default:
-                    {
-                        //! larger difference
-                        score = minusResult >= 2 
-                                ? $"Win for {player1.name}" // player1 wins
-                                : $"Win for {player2.name}"; // player2 wins
+                        score = $"Win for {WinningPlayer.name}";
                         break;
-                    }
                 }
                 return score;
             }
