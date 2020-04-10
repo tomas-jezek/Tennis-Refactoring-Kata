@@ -1,5 +1,4 @@
 using System.Linq;
-
 namespace Tennis.ThirdApproach
 {
     public class TennisGame : ITennisGame
@@ -12,6 +11,9 @@ namespace Tennis.ThirdApproach
         Player player1;
         Player player2;
 
+        static readonly string[] Labels = new[] {ScoreLabel.Love, ScoreLabel.Fifteen, ScoreLabel.Thirty, ScoreLabel.Forty}
+                                         .Select(lb => lb.ToString()).ToArray();
+
         public TennisGame(string player1Name, string player2Name)
         {
             this.player1 = new Player(player1Name);
@@ -20,21 +22,35 @@ namespace Tennis.ThirdApproach
 
         public string GetScore()
         {
-            string result;
-            if (player1.score < 4 && player2.score < 4 && (player1.score + player2.score < 6))
+            //! Low
+            bool lowAmountOfPoints = (player1, player2).Both(p => p.score < 4) 
+                                  && (player1.score + player2.score < 6);
+            if (lowAmountOfPoints)
             {
-                string[] p = new[] {ScoreLabel.Love, ScoreLabel.Fifteen, ScoreLabel.Thirty, ScoreLabel.Forty}
-                            .Select(lb => lb.ToString()).ToArray();
-                result = p[player1.score];
-                return (player1.score == player2.score)
-                        ? result + $"{Delimiter}{EqualityLabel}"
-                        : result + Delimiter + p[player2.score];
+                return MapPointsToResult(player1.score, player2.score);
             }
             else
             {
-                if (player1.score == player2.score) return ScoreLabel.Deuce.ToString();
-                result = player1.score > player2.score ? player1.name : player2.name;
-                return ((player1.score - player2.score) * (player1.score - player2.score) == 1) ? $"{ScoreLabel.Advantage} " + result : $"{ScoreLabel.Win} for " + result;
+                //! Equal large
+                bool equalPoints = player1.score == player2.score;
+                if (equalPoints) return ScoreLabel.Deuce.ToString();
+
+                //! Unequal large
+                string result = player1.score > player2.score 
+                        ? player1.name : player2.name;
+
+                bool differenceIsSmall = (player1.score - player2.score) * (player1.score - player2.score) == 1;
+                return (differenceIsSmall) 
+                        ? $"{ScoreLabel.Advantage} " + result 
+                        : $"{ScoreLabel.Win} for " + result;
+            }
+
+            string MapPointsToResult(int score1, int score2)
+            {
+                string secondLabel = score1 == score2
+                        ? EqualityLabel
+                        : Labels[score2];
+                return $"{Labels[score1]}{Delimiter}{secondLabel}";
             }
         }
 
