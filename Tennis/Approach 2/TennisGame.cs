@@ -2,20 +2,22 @@ namespace Tennis.SecondApproach
 {
     public class TennisGame : ITennisGame
     {
-        int player1Points;
-        int player2Points;
+        public const string EqualityLabel = "All";
+        public const string Delimiter = "-";
+
+        int player1Points = 0;
+        int player2Points = 0;
+
+        readonly string player1Name;
+        readonly string player2Name;
 
         string player1Result = string.Empty;
         string player2Result = string.Empty;
-        readonly string player1Name;
-        readonly string player2Name;
 
         public TennisGame(string player1Name, string player2Name)
         {
             this.player1Name = player1Name;
-            player1Points = 0;
             this.player2Name = player2Name;
-            //? Why not player 2 points?!
         }
 
         public string GetScore()
@@ -23,116 +25,122 @@ namespace Tennis.SecondApproach
             string score = string.Empty;
             if (player1Points == player2Points && player1Points < 3)
             {
-                switch (player1Points) {
+                switch (player1Points)
+                {
                     case 0:
-                        score = "Love";
+                        score = $"{ScoreLabel.Love}";
                         break;
                     case 1:
-                        score = "Fifteen";
+                        score = $"{ScoreLabel.Fifteen}";
                         break;
                     case 2:
-                        score = "Thirty";
+                        score = $"{ScoreLabel.Thirty}";
                         break;
                 }
-                score += "-All";
+                score += $"{Delimiter}{EqualityLabel}";
             }
-            if (player1Points == player2Points && player1Points > 2)
-                score = "Deuce";
+            if (player1Points == player2Points && player1Points > 2) score = $"{ScoreLabel.Deuce}";
 
             if (player1Points > 0 && player2Points == 0)
             {
-                switch (player1Points) {
+                switch (player1Points)
+                {
                     case 1:
-                        player1Result = "Fifteen";
+                        player1Result = $"{ScoreLabel.Fifteen}";
                         break;
                     case 2:
-                        player1Result = "Thirty";
+                        player1Result = $"{ScoreLabel.Thirty}";
                         break;
                     case 3:
-                        player1Result = "Forty";
+                        player1Result = $"{ScoreLabel.Forty}";
                         break;
                 }
 
-                player2Result = "Love";
-                score = player1Result + "-" + player2Result;
+                player2Result = $"{ScoreLabel.Love}";
+                score = player1Result + Delimiter + player2Result;
             }
             if (player2Points > 0 && player1Points == 0)
             {
-                switch (player2Points) {
+                switch (player2Points)
+                {
                     case 1:
-                        player2Result = "Fifteen";
+                        player2Result = $"{ScoreLabel.Fifteen}";
                         break;
                     case 2:
-                        player2Result = "Thirty";
+                        player2Result = $"{ScoreLabel.Thirty}";
                         break;
                     case 3:
-                        player2Result = "Forty";
+                        player2Result = $"{ScoreLabel.Forty}";
                         break;
                 }
 
-                player1Result = "Love";
-                score = player1Result + "-" + player2Result;
+                player1Result = $"{ScoreLabel.Love}";
+                score = player1Result + Delimiter + player2Result;
             }
 
             if (player1Points > player2Points && player1Points < 4)
             {
-                switch (player1Points) {
+                switch (player1Points)
+                {
                     case 2:
-                        player1Result = "Thirty";
+                        player1Result = $"{ScoreLabel.Thirty}";
                         break;
                     case 3:
-                        player1Result = "Forty";
+                        player1Result = $"{ScoreLabel.Forty}";
                         break;
                 }
 
-                switch (player2Points) {
+                switch (player2Points)
+                {
                     case 1:
-                        player2Result = "Fifteen";
+                        player2Result = $"{ScoreLabel.Fifteen}";
                         break;
                     case 2:
-                        player2Result = "Thirty";
+                        player2Result = $"{ScoreLabel.Thirty}";
                         break;
                 }
-                score = player1Result + "-" + player2Result;
+                score = player1Result + $"{Delimiter}" + player2Result;
             }
             if (player2Points > player1Points && player2Points < 4)
             {
-                switch (player2Points) {
+                switch (player2Points)
+                {
                     case 2:
-                        player2Result = "Thirty";
+                        player2Result = $"{ScoreLabel.Thirty}";
                         break;
                     case 3:
-                        player2Result = "Forty";
+                        player2Result = $"{ScoreLabel.Forty}";
                         break;
                 }
-                switch (player1Points) {
+                switch (player1Points)
+                {
                     case 1:
-                        player1Result = "Fifteen";
+                        player1Result = $"{ScoreLabel.Fifteen}";
                         break;
                     case 2:
-                        player1Result = "Thirty";
+                        player1Result = $"{ScoreLabel.Thirty}";
                         break;
                 }
-                score = player1Result + "-" + player2Result;
+                score = player1Result + Delimiter + player2Result;
             }
 
             if (player1Points > player2Points && player2Points >= 3)
             {
-                score = "Advantage player1";
+                score = $"{ScoreLabel.Advantage} {player1Name}";
             }
 
             if (player2Points > player1Points && player1Points >= 3)
             {
-                score = "Advantage player2";
+                score = $"{ScoreLabel.Advantage} {player2Name}";
             }
 
             if (player1Points >= 4 && player2Points >= 0 && (player1Points - player2Points) >= 2)
             {
-                score = "Win for player1";
+                score = $"{ScoreLabel.Win} for {player1Name}";
             }
             if (player2Points >= 4 && player1Points >= 0 && (player2Points - player1Points) >= 2)
             {
-                score = "Win for player2";
+                score = $"{ScoreLabel.Win} for {player2Name}";
             }
             return score;
         }
@@ -165,12 +173,8 @@ namespace Tennis.SecondApproach
 
         public void WonPoint(string playerName)
         {
-            if (playerName == "player1")
-                P1Score();
-            else
-                P2Score();
+            if (playerName == player1Name) P1Score();
+            else P2Score();
         }
-
     }
 }
-
