@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 namespace Tennis.ThirdApproach
 {
@@ -23,8 +24,8 @@ namespace Tennis.ThirdApproach
         public string GetScore()
         {
             //! Low
-            bool lowAmountOfPoints = (player1, player2).Both(p => p.score < 4) 
-                                  && (player1.score + player2.score < 6);
+            bool lowAmountOfPoints = (player1, player2).Both(p => p.score < 4)
+                                 && (player1, player2).Either(p => p.score != 3);
             if (lowAmountOfPoints)
             {
                 return MapPointsToResult(player1.score, player2.score);
@@ -39,7 +40,7 @@ namespace Tennis.ThirdApproach
                 string result = player1.score > player2.score 
                         ? player1.name : player2.name;
 
-                bool differenceIsSmall = (player1.score - player2.score) * (player1.score - player2.score) == 1;
+                bool differenceIsSmall = Math.Abs(player1.score - player2.score) == 1;
                 return (differenceIsSmall) 
                         ? $"{ScoreLabel.Advantage} " + result 
                         : $"{ScoreLabel.Win} for " + result;
