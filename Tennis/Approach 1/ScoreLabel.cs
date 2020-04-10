@@ -1,6 +1,6 @@
 namespace Tennis.FirstApproach {
     /// <summary> All the possible score denominators. </summary>
-    public enum Scores
+    public enum ScoreLabel
     {
         /// <summary> Zero points. </summary>
         Love,

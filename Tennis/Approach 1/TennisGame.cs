@@ -1,5 +1,4 @@
 using System;
-using JetBrains.Annotations;
 
 namespace Tennis.FirstApproach
 {
@@ -9,8 +8,17 @@ namespace Tennis.FirstApproach
         Player player1;
         Player player2;
 
+        /// <summary> The string representation of a victory. </summary>
+        public const string WinLabel = "Win";
+        /// <summary> The string representation of equal number of points when the score isn't high. </summary>
+        public const string EqualityLabel = "All";
+        /// <summary> The delimiter put between the scores. </summary>
+        public const string Delimiter = "-";
+
         /// <summary> Gets the player with the higher score. </summary>
         public Player WinningPlayer => TennisUtils.GetWinningPlayer(player1, player2);
+        /// <summary> Both of the players' scores. </summary>
+        public (int, int) Scores => (player1.score, player2.score);
 
         /// <summary> Creates an instance of a new game. </summary>
         /// <param name="player1Name"> The name of the first <see cref="Player"/>. </param>
@@ -31,40 +39,35 @@ namespace Tennis.FirstApproach
         }
 
         /// <summary> Constructs a string summarising the score. </summary>
-        public string GetScore() => GetScore("{0}-{1}");
-
-        /// <summary> Constructs a string summarising the score. </summary>
-        /// <param name="format"> Specify the position of score labels ({0},{1}) and the delimiter. </param>
-        [StringFormatMethod("format")]
-        public string GetScore(string format)
+        public string GetScore()
         {
             if (player1.score == player2.score) return NameEqualScores();
-            else if (player1.score >= 4 || player2.score >= 4) return NameLargeScores();
+            else if (Scores.Either(s => s >= 4)) return NameLargeScores();
             else return NameUnequalScores();
 
             //! Creates the score result when the scores are equal
             string NameEqualScores()
             {
                 return player1.score < 3
-                        ? $"{Result.MapLowScore(player1.score)}-{Result.EqualityLabel}"
-                        : Scores.Deuce.ToString();
+                        ? $"{TennisUtils.MapIndividualScore(player1.score)}{Delimiter}{EqualityLabel}"
+                        : ScoreLabel.Deuce.ToString();
             }
 
             //! Creates the score result when the scores are not equal
             string NameUnequalScores()
             {
-                Scores scoreLabel1 = Result.MapLowScore(player1.score);
-                Scores scoreLabel2 = Result.MapLowScore(player2.score);
-                return $"{scoreLabel1}-{scoreLabel2}";
+                ScoreLabel scoreLabel1 = TennisUtils.MapIndividualScore(player1.score);
+                ScoreLabel scoreLabel2 = TennisUtils.MapIndividualScore(player2.score);
+                return $"{scoreLabel1}{Delimiter}{scoreLabel2}";
             }
 
             //! Creates the score result when the scores are large
             string NameLargeScores()
             {
                 int scoreDifference = Math.Abs(player1.score - player2.score);
-                return scoreDifference == 1 
-                        ? $"{Scores.Advantage} {WinningPlayer.name}" 
-                        : $"{Result.WinLabel} for {WinningPlayer.name}";
+                return scoreDifference == 1
+                        ? $"{ScoreLabel.Advantage} {WinningPlayer.name}"
+                        : $"{WinLabel} for {WinningPlayer.name}";
             }
         }
     }
