@@ -22,7 +22,26 @@ namespace Tennis.SecondApproach
         public string GetScore()
         {
             string score = string.Empty;
-            if (player1.score == player2.score && player1.score < 3)
+            if (player1.score == player2.score)
+            {
+                if (player1.score < 3) score = NameLowScore();
+                else if (player1.score > 2) score = NameLowEqual();
+            }
+
+            if (player1.score > 0 && player2.score == 0) score = Player2Love();
+            if (player2.score > 0 && player1.score == 0) score = Player1Love();
+
+            if (player1.score > player2.score && player1.score < 4) score = Player1LowMore();
+            if (player2.score > player1.score && player2.score < 4) score = Player2LowMore();
+
+            if (player1.score > player2.score && player2.score >= 3) score = Player1HighMore();
+            if (player2.score > player1.score && player1.score >= 3) score = Player2HighMore();
+
+            if (player1.score >= 4 && player2.score >= 0 && (player1.score - player2.score) >= 2) score = Player1Win();
+            if (player2.score >= 4 && player1.score >= 0 && (player2.score - player1.score) >= 2) score = Player2Win();
+            return score;
+
+            string NameLowScore()
             {
                 switch (player1.score)
                 {
@@ -37,10 +56,10 @@ namespace Tennis.SecondApproach
                         break;
                 }
                 score += $"{Delimiter}{EqualityLabel}";
+                return score;
             }
-            if (player1.score == player2.score && player1.score > 2) score = $"{ScoreLabel.Deuce}";
 
-            if (player1.score > 0 && player2.score == 0)
+            string Player2Love()
             {
                 switch (player1.score)
                 {
@@ -57,8 +76,10 @@ namespace Tennis.SecondApproach
 
                 player2Result = $"{ScoreLabel.Love}";
                 score = player1Result + Delimiter + player2Result;
+                return score;
             }
-            if (player2.score > 0 && player1.score == 0)
+
+            string Player1Love()
             {
                 switch (player2.score)
                 {
@@ -75,9 +96,10 @@ namespace Tennis.SecondApproach
 
                 player1Result = $"{ScoreLabel.Love}";
                 score = player1Result + Delimiter + player2Result;
+                return score;
             }
 
-            if (player1.score > player2.score && player1.score < 4)
+            string Player1LowMore()
             {
                 switch (player1.score)
                 {
@@ -99,8 +121,10 @@ namespace Tennis.SecondApproach
                         break;
                 }
                 score = player1Result + $"{Delimiter}" + player2Result;
+                return score;
             }
-            if (player2.score > player1.score && player2.score < 4)
+
+            string Player2LowMore()
             {
                 switch (player2.score)
                 {
@@ -121,27 +145,37 @@ namespace Tennis.SecondApproach
                         break;
                 }
                 score = player1Result + Delimiter + player2Result;
+                return score;
             }
 
-            if (player1.score > player2.score && player2.score >= 3)
+            string Player1HighMore()
             {
                 score = $"{ScoreLabel.Advantage} {player1.name}";
+                return score;
             }
 
-            if (player2.score > player1.score && player1.score >= 3)
+            string Player2HighMore()
             {
                 score = $"{ScoreLabel.Advantage} {player2.name}";
+                return score;
             }
 
-            if (player1.score >= 4 && player2.score >= 0 && (player1.score - player2.score) >= 2)
+            string Player1Win()
             {
                 score = $"{ScoreLabel.Win} for {player1.name}";
+                return score;
             }
-            if (player2.score >= 4 && player1.score >= 0 && (player2.score - player1.score) >= 2)
+
+            string Player2Win()
             {
                 score = $"{ScoreLabel.Win} for {player2.name}";
+                return score;
             }
-            return score;
+
+            string NameLowEqual()
+            {
+                return $"{ScoreLabel.Deuce}";
+            }
         }
 
         public void WonPoint(string playerName)
