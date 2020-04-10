@@ -1,7 +1,8 @@
 using System;
 using JetBrains.Annotations;
 
-namespace Tennis.FirstApproach {
+namespace Tennis.FirstApproach
+{
     /// <summary> A single game of tennis. </summary>
     class TennisGame : ITennisGame
     {
@@ -63,19 +64,9 @@ namespace Tennis.FirstApproach {
             string NameLargeScores()
             {
                 int scoreDifference = Math.Abs(player1.score - player2.score);
-                switch (scoreDifference)
-                {
-                    case 0:
-                        // TODO: Move 'Deuce' here
-                        break;
-                    case 1:
-                        score = $"{Scores.Advantage} {WinningPlayer.name}";
-                        break;
-                    default:
-                        score = $"{Result.WinLabel} for {WinningPlayer.name}";
-                        break;
-                }
-                return score;
+                return scoreDifference == 1 
+                        ? $"{Scores.Advantage} {WinningPlayer.name}" 
+                        : $"{Result.WinLabel} for {WinningPlayer.name}";
             }
         }
     }

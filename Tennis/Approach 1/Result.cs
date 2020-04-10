@@ -37,6 +37,7 @@ namespace Tennis.FirstApproach
         }
 
         /// <summary> Maps a score between 0 and 3. </summary>
+        /// <remarks> It doesn't work with other scores because the logic would have to be different. </remarks>
         /// <param name="score"> The score the <see cref="Player"/> has gathered. </param>
         public static Scores MapLowScore(int score)
         {
