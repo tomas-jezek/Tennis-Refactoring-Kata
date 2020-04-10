@@ -1,11 +1,11 @@
 using System;
 using JetBrains.Annotations;
 
-namespace Tennis.FirstApproach {
+namespace Tennis.FirstApproach
+{
     /// <summary> The result of a game, based on <see cref="Player">players'</see> scores. </summary>
     struct Result
     {
-
         // TODO: Use Result struct
 
         /// <summary> The string representation of a victory. </summary>
@@ -34,6 +34,25 @@ namespace Tennis.FirstApproach {
         public Result(int score1, int score2)
         {
             scores = (score1, score2);
+        }
+
+        /// <summary> Maps a score between 0 and 3. </summary>
+        /// <param name="score"> The score the <see cref="Player"/> has gathered. </param>
+        public static Scores MapRegularScore(int score)
+        {
+            switch (score)
+            {
+                case 0:
+                    return Scores.Love;
+                case 1:
+                    return Scores.Fifteen;
+                case 2:
+                    return Scores.Thirty;
+                case 3:
+                    return Scores.Forty;
+                default:
+                    throw new InvalidOperationException("Unsupported score for mapping.");
+            }
         }
 
         /// <summary> Creates a new game <see cref="Result"/>. </summary>

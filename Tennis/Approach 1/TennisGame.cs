@@ -20,6 +20,9 @@ namespace Tennis.FirstApproach {
             this.player2 = new Player(player2Name);
         }
 
+        /// <summary> Adds a point for the given player. </summary>
+        /// <remarks> A <see langword="string"/> name of the player. </remarks>
+        /// <param name="playerName"> The name of the player to add a point to. </param>
         public void WonPoint(string playerName)
         {
             if (playerName == player1.name) player1.AddPoint();
@@ -77,27 +80,14 @@ namespace Tennis.FirstApproach {
                 // TODO: Use Format
                 for (int i = 1; i < 3; i++)
                 {
-                    int tempScore;
-                    if (i == 1) tempScore = player1.score;
+                    if (i == 1)
+                    {
+                        score += Result.MapRegularScore(player1.score);
+                    }
                     else
                     {
                         score += "-";
-                        tempScore = player2.score;
-                    }
-                    switch (tempScore)
-                    {
-                        case 0:
-                            score += Scores.Love;
-                            break;
-                        case 1:
-                            score += Scores.Fifteen;
-                            break;
-                        case 2:
-                            score += Scores.Thirty;
-                            break;
-                        case 3:
-                            score += Scores.Forty;
-                            break;
+                        score += Result.MapRegularScore(player2.score);
                     }
                 }
                 return score;
