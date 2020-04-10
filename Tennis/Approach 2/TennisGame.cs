@@ -1,3 +1,5 @@
+using System;
+
 namespace Tennis.SecondApproach
 {
     public class TennisGame : ITennisGame
@@ -12,6 +14,39 @@ namespace Tennis.SecondApproach
 
         string player1Result = string.Empty;
         string player2Result = string.Empty;
+
+        /// <summary> Returns the player with the higher amount of points. </summary>
+        internal Player WinningPlayer => player1.score >= player2.score ? player1 : player2;
+
+        /// <summary> Returns the player with the lower amount of points. </summary>
+        internal Player LosingPlayer => player1.score >= player2.score ? player2 : player1;
+
+        internal void SetWinningResult(string result)
+        {
+            if (WinningPlayer.Equals(player1)) player1Result = result;
+            else player2Result = result;
+        }
+        internal void SetLosingResult(string result)
+        {
+            if (WinningPlayer.Equals(player1)) player2Result = result;
+            else player1Result = result;
+        }
+
+        /// <summary> Returns <see langword="true"/> if a condition is satisfied by either <see cref="Player"/>. </summary>
+        /// <param name="condition"> The condition to be fulfilled by either <see cref="Player"/>. </param>
+        internal bool AnyPlayer(Func<Player, Player, bool> condition)
+        {
+            return condition.Invoke(player1, player2) || condition.Invoke(player2, player1);
+        }
+
+        /// <summary> Returns the <see cref="Player"/> who satisfies a condition. </summary>
+        /// <param name="condition"> The condition to be fulfilled by a single <see cref="Player"/>. </param>
+        internal Player WhichPlayer(Func<Player, Player, bool> condition)
+        {
+            if (condition.Invoke(player1, player2)) return player1;
+            else if (condition.Invoke(player2, player1)) return player2;
+            else throw new InvalidOperationException("Neither player satisfied the given condition.");
+        }
 
         public TennisGame(string player1Name, string player2Name)
         {
@@ -28,17 +63,14 @@ namespace Tennis.SecondApproach
                 else if (player1.score > 2) score = NameLowEqual();
             }
 
-            if (player1.score > 0 && player2.score == 0) score = Player2Love();
-            if (player2.score > 0 && player1.score == 0) score = Player1Love();
-
-            if (player1.score > player2.score && player1.score < 4) score = Player1LowMore();
-            if (player2.score > player1.score && player2.score < 4) score = Player2LowMore();
-
-            if (player1.score > player2.score && player2.score >= 3) score = Player1HighMore();
-            if (player2.score > player1.score && player1.score >= 3) score = Player2HighMore();
-
-            if (player1.score >= 4 && player2.score >= 0 && (player1.score - player2.score) >= 2) score = Player1Win();
-            if (player2.score >= 4 && player1.score >= 0 && (player2.score - player1.score) >= 2) score = Player2Win();
+            if (AnyPlayer((player, opponent) => player.score > 0 && opponent.score == 0)) 
+                PlayerLove();
+            if (AnyPlayer((player, opponent) => player.score > opponent.score && player.score < 4)) 
+                score = PlayerLowMore();
+            if (AnyPlayer((player, opponent) => player.score > opponent.score && opponent.score >= 3)) 
+                score = PlayerHighMore();
+            if (AnyPlayer((player, opponent) => player.score >= 4 && opponent.score >= 0 && (player.score - opponent.score) >= 2)) 
+                score = PlayerWin();
             return score;
 
             string NameLowScore()
@@ -59,116 +91,65 @@ namespace Tennis.SecondApproach
                 return score;
             }
 
-            string Player2Love()
+            string PlayerLove()
             {
-                switch (player1.score)
+                Player winningPlayer = WinningPlayer;
+                switch (winningPlayer.score)
                 {
                     case 1:
-                        player1Result = $"{ScoreLabel.Fifteen}";
+                        SetWinningResult($"{ScoreLabel.Fifteen}");
                         break;
                     case 2:
-                        player1Result = $"{ScoreLabel.Thirty}";
+                        SetWinningResult($"{ScoreLabel.Thirty}");
                         break;
                     case 3:
-                        player1Result = $"{ScoreLabel.Forty}";
+                        SetWinningResult($"{ScoreLabel.Forty}");
                         break;
                 }
 
-                player2Result = $"{ScoreLabel.Love}";
+                SetLosingResult($"{ScoreLabel.Love}");
+
                 score = player1Result + Delimiter + player2Result;
                 return score;
             }
 
-            string Player1Love()
+            string PlayerLowMore()
             {
-                switch (player2.score)
+                Player winningPlayer = WinningPlayer;
+                Player losingPlayer = LosingPlayer;
+
+                switch (winningPlayer.score)
                 {
-                    case 1:
-                        player2Result = $"{ScoreLabel.Fifteen}";
-                        break;
                     case 2:
-                        player2Result = $"{ScoreLabel.Thirty}";
+                        SetWinningResult( $"{ScoreLabel.Thirty}");
                         break;
                     case 3:
-                        player2Result = $"{ScoreLabel.Forty}";
+                        SetWinningResult($"{ScoreLabel.Forty}");
                         break;
                 }
 
-                player1Result = $"{ScoreLabel.Love}";
-                score = player1Result + Delimiter + player2Result;
-                return score;
-            }
-
-            string Player1LowMore()
-            {
-                switch (player1.score)
-                {
-                    case 2:
-                        player1Result = $"{ScoreLabel.Thirty}";
-                        break;
-                    case 3:
-                        player1Result = $"{ScoreLabel.Forty}";
-                        break;
-                }
-
-                switch (player2.score)
+                switch (losingPlayer.score)
                 {
                     case 1:
-                        player2Result = $"{ScoreLabel.Fifteen}";
+                        SetLosingResult($"{ScoreLabel.Fifteen}");
                         break;
                     case 2:
-                        player2Result = $"{ScoreLabel.Thirty}";
+                        SetLosingResult($"{ScoreLabel.Thirty}");
                         break;
                 }
                 score = player1Result + $"{Delimiter}" + player2Result;
                 return score;
             }
 
-            string Player2LowMore()
+            string PlayerHighMore()
             {
-                switch (player2.score)
-                {
-                    case 2:
-                        player2Result = $"{ScoreLabel.Thirty}";
-                        break;
-                    case 3:
-                        player2Result = $"{ScoreLabel.Forty}";
-                        break;
-                }
-                switch (player1.score)
-                {
-                    case 1:
-                        player1Result = $"{ScoreLabel.Fifteen}";
-                        break;
-                    case 2:
-                        player1Result = $"{ScoreLabel.Thirty}";
-                        break;
-                }
-                score = player1Result + Delimiter + player2Result;
+                score = $"{ScoreLabel.Advantage} {WinningPlayer.name}";
                 return score;
             }
 
-            string Player1HighMore()
+            string PlayerWin()
             {
-                score = $"{ScoreLabel.Advantage} {player1.name}";
-                return score;
-            }
-
-            string Player2HighMore()
-            {
-                score = $"{ScoreLabel.Advantage} {player2.name}";
-                return score;
-            }
-
-            string Player1Win()
-            {
-                score = $"{ScoreLabel.Win} for {player1.name}";
-                return score;
-            }
-
-            string Player2Win()
-            {
-                score = $"{ScoreLabel.Win} for {player2.name}";
+                score = $"{ScoreLabel.Win} for {WinningPlayer}";
                 return score;
             }
 
