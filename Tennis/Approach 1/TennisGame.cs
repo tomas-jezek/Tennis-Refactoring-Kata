@@ -1,4 +1,5 @@
 using System;
+using JetBrains.Annotations;
 
 namespace Tennis.FirstApproach {
     /// <summary> A single game of tennis. </summary>
@@ -25,7 +26,13 @@ namespace Tennis.FirstApproach {
             else player2.AddPoint();
         }
 
-        public string GetScore()
+        /// <summary> Constructs a string summarising the score. </summary>
+        public string GetScore() => GetScore("{0}-{1}");
+
+        /// <summary> Constructs a string summarising the score. </summary>
+        /// <param name="format"> Specify the position of score labels ({0},{1}) and the delimiter. </param>
+        [StringFormatMethod("format")]
+        public string GetScore(string format)
         {
             string score = string.Empty;
             if (player1.score == player2.score)
@@ -45,19 +52,20 @@ namespace Tennis.FirstApproach {
             //! Creates the score result when the scores are equal
             string NameEqualScores()
             {
+                // TODO: Use Format
                 switch (player1.score)
                 {
                     case 0:
-                        score = "Love-All";
+                        score = $"{Scores.Love}-{Result.EqualityLabel}";
                         break;
                     case 1:
-                        score = "Fifteen-All";
+                        score = $"{Scores.Fifteen}-{Result.EqualityLabel}";
                         break;
                     case 2:
-                        score = "Thirty-All";
+                        score = $"{Scores.Thirty}-{Result.EqualityLabel}";
                         break;
                     default:
-                        score = "Deuce";
+                        score = $"{Scores.Deuce}";
                         break;
                 }
                 return score;
@@ -66,6 +74,7 @@ namespace Tennis.FirstApproach {
             //! Creates the score result when the scores are not equal
             string NameUnequalScores()
             {
+                // TODO: Use Format
                 for (int i = 1; i < 3; i++)
                 {
                     int tempScore;
@@ -78,16 +87,16 @@ namespace Tennis.FirstApproach {
                     switch (tempScore)
                     {
                         case 0:
-                            score += "Love";
+                            score += Scores.Love;
                             break;
                         case 1:
-                            score += "Fifteen";
+                            score += Scores.Fifteen;
                             break;
                         case 2:
-                            score += "Thirty";
+                            score += Scores.Thirty;
                             break;
                         case 3:
-                            score += "Forty";
+                            score += Scores.Forty;
                             break;
                     }
                 }
@@ -104,10 +113,10 @@ namespace Tennis.FirstApproach {
                         // TODO: Move 'Deuce' here
                         break;
                     case 1:
-                        score = $"Advantage {WinningPlayer.name}";
+                        score = $"{Scores.Advantage} {WinningPlayer.name}";
                         break;
                     default:
-                        score = $"Win for {WinningPlayer.name}";
+                        score = $"{Result.WinLabel} for {WinningPlayer.name}";
                         break;
                 }
                 return score;

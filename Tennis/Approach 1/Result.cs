@@ -1,25 +1,29 @@
 using System;
+using JetBrains.Annotations;
 
 namespace Tennis.FirstApproach {
     /// <summary> The result of a game, based on <see cref="Player">players'</see> scores. </summary>
     struct Result
     {
-        /// <summary> All the possible score denominators. </summary>
-        enum Scores
+
+        // TODO: Use Result struct
+
+        /// <summary> The string representation of a victory. </summary>
+        public const string WinLabel = "Win";
+
+        /// <summary> The string representation of equal number of points when the score isn't high. </summary>
+        public const string EqualityLabel = "All";
+
+        /// <summary> Returns a formatted result. </summary>
+        /// <param name="format"> Specify the position of score labels ({0},{1}) and the delimiter. </param>
+        /// <returns></returns>
+        [StringFormatMethod("format")]
+        public string Format(string format = "{0}-{1}")
         {
-            /// <summary> Zero points. </summary>
-            Love,
-            /// <summary> One point. </summary>
-            Fifteen,
-            /// <summary> Two points. </summary>
-            Thirty,
-            /// <summary> Three points. </summary>
-            Forty,
-            /// <summary> Equal number of points over three. </summary>
-            Deuce,
-            /// <summary> Unequal number of points over three. </summary>
-            Advantage
+            // TODO: Get result labels here
+            return string.Format(format, scores.Item1, scores.Item2);
         }
+
 
         /// <summary> The scores of both opponents. </summary>
         (int, int) scores;
