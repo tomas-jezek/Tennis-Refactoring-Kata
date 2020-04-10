@@ -38,47 +38,24 @@ namespace Tennis.FirstApproach {
         public string GetScore(string format)
         {
             string score = string.Empty;
-            if (player1.score == player2.score)
-            {
-                score = NameEqualScores();
-            }
-            else if (player1.score >= 4 || player2.score >= 4)
-            {
-                score = NameLargeScores();
-            }
-            else
-            {
-                score = NameUnequalScores();
-            }
+            if (player1.score == player2.score) score = NameEqualScores();
+            else if (player1.score >= 4 || player2.score >= 4) score = NameLargeScores();
+            else score = NameUnequalScores();
             return score;
 
             //! Creates the score result when the scores are equal
             string NameEqualScores()
             {
-                // TODO: Use Format
-                switch (player1.score)
-                {
-                    case 0:
-                        score = $"{Scores.Love}-{Result.EqualityLabel}";
-                        break;
-                    case 1:
-                        score = $"{Scores.Fifteen}-{Result.EqualityLabel}";
-                        break;
-                    case 2:
-                        score = $"{Scores.Thirty}-{Result.EqualityLabel}";
-                        break;
-                    default:
-                        score = $"{Scores.Deuce}";
-                        break;
-                }
-                return score;
+                return player1.score < 3
+                        ? $"{Result.MapLowScore(player1.score)}-{Result.EqualityLabel}"
+                        : Scores.Deuce.ToString();
             }
 
             //! Creates the score result when the scores are not equal
             string NameUnequalScores()
             {
-                Scores scoreLabel1 = Result.MapRegularScore(player1.score);
-                Scores scoreLabel2 = Result.MapRegularScore(player2.score);
+                Scores scoreLabel1 = Result.MapLowScore(player1.score);
+                Scores scoreLabel2 = Result.MapLowScore(player2.score);
                 return $"{scoreLabel1}-{scoreLabel2}";
             }
 
