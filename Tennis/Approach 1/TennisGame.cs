@@ -38,11 +38,9 @@ namespace Tennis.FirstApproach
         [StringFormatMethod("format")]
         public string GetScore(string format)
         {
-            string score = string.Empty;
-            if (player1.score == player2.score) score = NameEqualScores();
-            else if (player1.score >= 4 || player2.score >= 4) score = NameLargeScores();
-            else score = NameUnequalScores();
-            return score;
+            if (player1.score == player2.score) return NameEqualScores();
+            else if (player1.score >= 4 || player2.score >= 4) return NameLargeScores();
+            else return NameUnequalScores();
 
             //! Creates the score result when the scores are equal
             string NameEqualScores()
