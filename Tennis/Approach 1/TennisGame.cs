@@ -77,20 +77,9 @@ namespace Tennis.FirstApproach {
             //! Creates the score result when the scores are not equal
             string NameUnequalScores()
             {
-                // TODO: Use Format
-                for (int i = 1; i < 3; i++)
-                {
-                    if (i == 1)
-                    {
-                        score += Result.MapRegularScore(player1.score);
-                    }
-                    else
-                    {
-                        score += "-";
-                        score += Result.MapRegularScore(player2.score);
-                    }
-                }
-                return score;
+                Scores scoreLabel1 = Result.MapRegularScore(player1.score);
+                Scores scoreLabel2 = Result.MapRegularScore(player2.score);
+                return $"{scoreLabel1}-{scoreLabel2}";
             }
 
             //! Creates the score result when the scores are large
