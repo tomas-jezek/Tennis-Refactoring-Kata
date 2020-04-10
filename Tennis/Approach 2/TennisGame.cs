@@ -146,8 +146,8 @@ namespace Tennis.SecondApproach
 
         public void WonPoint(string playerName)
         {
-            if (playerName == player1.name) player1.AddPoints(1);
-            else player2.AddPoints(1);
+            if (playerName == player1.name) player1.AddPoints();
+            else player2.AddPoints();
         }
     }
 }
