@@ -18,7 +18,7 @@
         }
 
         /// <summary> Adds a point to the player's <see cref="score"/>. </summary>
-        public void AddPoint() => score++;
+        public void AddPoints(int points) => score += points;
 
         /// <summary>Returns the name of the player.</summary>
         public override string ToString() => $"{name}";
