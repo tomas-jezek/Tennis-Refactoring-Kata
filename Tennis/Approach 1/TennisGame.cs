@@ -49,16 +49,16 @@ namespace Tennis.FirstApproach
             string NameEqualScores()
             {
                 return player1.score < 3
-                        ? $"{TennisUtils.MapIndividualScore(player1.score)}{Delimiter}{EqualityLabel}"
-                        : ScoreLabel.Deuce.ToString();
+                        ? $"{TennisUtils.MapIndividualScore(player1.score)}{Delimiter}{EqualityLabel}" //! Equal small scores
+                        : ScoreLabel.Deuce.ToString(); //! Draw for large scores
             }
 
             //! Creates the score result when the scores are not equal
             string NameUnequalScores()
             {
-                ScoreLabel scoreLabel1 = TennisUtils.MapIndividualScore(player1.score);
-                ScoreLabel scoreLabel2 = TennisUtils.MapIndividualScore(player2.score);
-                return $"{scoreLabel1}{Delimiter}{scoreLabel2}";
+                ScoreLabel player1Score = TennisUtils.MapIndividualScore(player1.score);
+                ScoreLabel player2Score = TennisUtils.MapIndividualScore(player2.score);
+                return $"{player1Score}{Delimiter}{player2Score}";
             }
 
             //! Creates the score result when the scores are large

@@ -39,7 +39,7 @@ namespace Tennis.FirstApproach
         }
 
         /// <summary> Maps a score for a single player, between 0 and 3. </summary>
-        /// <remarks> It doesn't work with other scores because they're related to the other player's score. </remarks>
+        /// <remarks> Higher scores are always related to the other player's score. </remarks>
         /// <param name="score"> The score the <see cref="Player"/> has gathered. </param>
         public static ScoreLabel MapIndividualScore(int score)
         {
